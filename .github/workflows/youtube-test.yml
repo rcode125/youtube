@@ -1,0 +1,13 @@
+name: YouTube connectivity test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test YouTube
+        run: |
+          set -x
+          curl -I -L --max-time 15 https://www.youtube.com/
