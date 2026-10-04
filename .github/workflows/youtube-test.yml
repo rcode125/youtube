@@ -10,7 +10,8 @@ jobs:
     steps:
       - name: Test YouTube
         run: |
-          set -x
+          echo "Warte 15 Sekunden..."
+          sleep 15
 
           echo "=== YouTube main ==="
           curl -I -L --max-time 15 \
