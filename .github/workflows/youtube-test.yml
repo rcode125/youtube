@@ -6,8 +6,20 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Test YouTube
         run: |
           set -x
-          curl -I -L --max-time 15 https://www.youtube.com/
+
+          echo "=== YouTube main ==="
+          curl -I -L --max-time 15 \
+            "https://www.youtube.com/"
+
+          echo "=== YouTube embed ==="
+          curl -I -L --max-time 15 \
+            "https://www.youtube.com/embed/dQw4w9WgXcQ"
+
+          echo "=== YouTube oEmbed ==="
+          curl -I -L --max-time 15 \
+            "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ&format=json"
