@@ -1,4 +1,4 @@
-name: YouTube connectivity test
+name: YouTube video analysis
 
 on:
   workflow_dispatch:
@@ -8,19 +8,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Test YouTube
+      - name: Analyze YouTube video
         run: |
           echo "Warte 15 Sekunden..."
           sleep 15
 
-          echo "=== YouTube main ==="
-          curl -I -L --max-time 15 \
-            "https://www.youtube.com/"
+          VIDEO_ID="VIDEO_ID"
 
-          echo "=== YouTube embed ==="
-          curl -I -L --max-time 15 \
-            "https://www.youtube.com/embed/dQw4w9WgXcQ"
+          echo "=== oEmbed ==="
+          curl -sS \
+            "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${VIDEO_ID}&format=json" \
+            | python3 -m json.tool
 
-          echo "=== YouTube oEmbed ==="
-          curl -I -L --max-time 15 \
-            "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=dQw4w9WgXcQ&format=json"
+          echo
+          echo "=== Video page ==="
+          curl -sS -L \
+            "https://www.youtube.com/watch?v=${VIDEO_ID}" \
+            -o youtube.html
+
+          echo "YouTube response:"
+          wc -c youtube.html
+
+          echo
+          echo "Suche nach videoDetails..."
+          grep -o '"videoDetails"[^}]*' youtube.html | head -c 2000 || true
